@@ -6,7 +6,7 @@ const { authRequired } = require('../middleware/auth');
 
 const router = express.Router();
 
-router.put(
+router.post(
     '/profile',
     authRequired,
     body('username')
