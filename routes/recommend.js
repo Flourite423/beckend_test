@@ -21,7 +21,10 @@ router.post(
         const { province, majorIds, page = 1, pageSize = 20 } = req.body;
 
         try {
-            //实现推荐逻辑
+            // TODO: 1. 从数据库获取用户成绩
+            // TODO: 2. 根据筛选条件查询院校数据
+            // TODO: 3. 调用推荐算法计算匹配度和风险
+            // TODO: 4. 返回推荐结果
 
             return res.json({
                 data: [],

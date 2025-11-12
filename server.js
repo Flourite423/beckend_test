@@ -10,6 +10,8 @@ const majorsRouter = require('./routes/majors');
 const plansRouter = require('./routes/plans');
 const schoolEnrollmentRouter = require('./routes/schoolEnrollment');
 const studentScoreRouter = require('./routes/studentScore');
+const userRouter = require('./routes/user');
+const recommendRouter = require('./routes/recommend');
 const devSamplesRouter = require('./routes/devsample');
 
 const app = express();
@@ -25,6 +27,8 @@ app.use('/majors', majorsRouter);
 app.use('/plans', plansRouter);
 app.use('/school-enrollment', schoolEnrollmentRouter);
 app.use('/student-score', studentScoreRouter);
+app.use('/user', userRouter);
+app.use('/recommend', recommendRouter);
 app.use('/dev-samples', devSamplesRouter);
 
 app.use((err, req, res, next) => {

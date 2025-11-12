@@ -12,25 +12,25 @@ router.post(
     body('username')
         .optional()
         .trim()
-        .isLength({ min: 5, max: 50 })
+        .isLength({ min: 5, max: 20 })
         .matches(/^[A-Za-z0-9_]+$/),
     body('province')
         .optional({ checkFalsy: true })
         .trim()
-        .isLength({ min: 1, max: 64 }),
-    body('schoolId')
+        .isLength({ min: 1, max: 48 }),
+    body('schoolName')
         .optional({ checkFalsy: true })
-        .isInt({ min: 1 })
-        .toInt(),
+        .trim()
+        .isLength({ min: 1, max: 255 }),
     async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const { username, province, schoolId } = req.body;
+        const { username, province, schoolName } = req.body;
 
-        if (username === undefined && province === undefined && schoolId === undefined) {
+        if (username === undefined && province === undefined && schoolName === undefined) {
             return res.status(400).json({ error: 'No fields to update' });
         }
 
@@ -44,12 +44,12 @@ router.post(
 
         if (province !== undefined) {
             fields.push('PROVINCE = ?');
-            params.push(province === '' ? null : province);
+            params.push(province);
         }
 
-        if (schoolId !== undefined) {
-            fields.push('SCHOOL_ID = ?');
-            params.push(schoolId === null ? null : schoolId);
+        if (schoolName !== undefined) {
+            fields.push('SCHOOL_NAME = ?');
+            params.push(schoolName);
         }
 
         params.push(req.user.userId);
@@ -63,7 +63,7 @@ router.post(
             }
 
             const [rows] = await db.execute(
-                'SELECT USER_ID, USERNAME, PROVINCE, SCHOOL_ID FROM users WHERE USER_ID = ?',
+                'SELECT USER_ID, USERNAME, PROVINCE, SCHOOL_NAME FROM users WHERE USER_ID = ?',
                 [req.user.userId]
             );
 
@@ -79,7 +79,7 @@ router.post(
                     userId: user.USER_ID,
                     username: user.USERNAME,
                     province: user.PROVINCE,
-                    schoolId: user.SCHOOL_ID,
+                    schoolName: user.SCHOOL_NAME,
                 },
             });
         } catch (err) {
